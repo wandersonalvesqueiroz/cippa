@@ -1,11 +1,11 @@
-const BASE_API = 'https://api.cippa.com.br/cippa/api';
+const BASE_API = 'http://10.0.2.2:3333';
 
 export default {
     checkToken: async (token) => {
-        const req = await fetch(`${BASE_API}/auth/refresh`, {
+        const req = await fetch(`${BASE_API}/session/refresh`, {
             method: 'POST',
-            header: {
-                Accept: 'application/josn',
+            headers: {
+                Accept: 'application/json',
                 'Content-Type' : 'application/json'
             },
             body: JSON.stringify({token})
@@ -13,26 +13,30 @@ export default {
         const json = await req.json();
         return json;
     },
-    signIn: async () => {
-        const req = await fetch(`${BASE_API}/auth/login`, {
+    signIn: async (email, password) => {
+        const req = await fetch(`${BASE_API}/sessions`, {
             method: 'POST',
-            header: {
-                Accept: 'application/josn',
+            headers: {
+                'Accept': 'application/json',
                 'Content-Type' : 'application/json'
             },
             body: JSON.stringify({email, password})
         });
+
         const json = await req.json();
+
         return json;
     },
-    signUp: async (name, email, password) => {
-        const req = await fetch(`${BASE_API}/user`, {
+    recoveryPassword: async (email) => {
+
+        const redirect_url = 'http://meusistema.com/resetar_senha';
+        const req = await fetch(`${BASE_API}/passwords`, {
             method: 'POST',
-            header: {
-                Accept: 'application/josn',
+            headers: {
+                Accept: 'application/json',
                 'Content-Type' : 'application/json'
             },
-            body: JSON.stringify({name, email, password})
+            body: JSON.stringify({email, redirect_url})
         });
         const json = await req.json();
         return json;

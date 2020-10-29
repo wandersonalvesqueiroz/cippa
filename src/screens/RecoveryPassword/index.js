@@ -1,7 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Alert } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
 import {
     Container,
     InputArea,
@@ -14,46 +13,39 @@ import {
 } from './styles';
 
 import Api from '../../Api';
-import UserContext from '../../contexts/UserContext';
 
 import SignInput from '../../components/SignInput';
 
 import CippaLogo from '../../assets/cippa_logo.svg';
 import EmailIcon from '../../assets/icons/solid/envelope.svg';
-import LockIcon from '../../assets/icons/solid/lock.svg';
 
 export default () => {
 
-    // const { dispatch: userDispatch } = useContext(UserContext);
     const navigation = useNavigation();
 
     const [emailField, setEmailField] = useState('');
-    const [passwordField, setPasswordField] = useState('');
 
     const handleSignClick = async () => {
-        if (emailField != '' && passwordField != '') {
-            let json = await Api.signIn(emailField, passwordField);
+        if (emailField != '') {
+            let res = await Api.recoveryPassword(emailField);
 
-            if (json.token) {
-
-                await AsyncStorage.setItem('token', json.token);
-
+            if (res.sucesso) {
+                Alert.alert('Sucesso!', res.sucesso);
                 navigation.reset({
-                    routes: [{ name: 'MainTab' }]
+                    routes: [{ name: 'SignIn' }]
                 });
-
             } else {
-                alert("E-mail e/ou senha errados");
+                Alert.alert('Atenção', res.error.message);
             }
 
         } else {
-            Alert.alert('Atenção', 'Preencha os campos corretamente!')
+            Alert.alert('Atenção', 'Digite o e-mail!')
         }
     }
 
     const handleMessageButtonClick = () => {
         navigation.reset({
-            routes: [{ name: 'RecoveryPassword' }]
+            routes: [{ name: 'SignIn' }]
         });
     }
 
@@ -63,33 +55,27 @@ export default () => {
             resizeMode='cover'
         >
             <Container>
+
                 <CippaLogo width="100%" height="200" />
                 <InputArea>
 
                     <SignInput
                         IconSvg={EmailIcon}
-                        placeholder="Digite seu e-mail"
+                        placeholder="Informe o email"
                         value={emailField}
                         onChangeText={t => setEmailField(t)}
                     />
 
-                    <SignInput
-                        IconSvg={LockIcon}
-                        placeholder="Digite sua senha"
-                        value={passwordField}
-                        onChangeText={t => setPasswordField(t)}
-                        password={true}
-                    />
-
                     <CustomButton onPress={handleSignClick}>
-                        <CustomButtonText>ACESSAR</CustomButtonText>
+                        <CustomButtonText>RECUPERAR</CustomButtonText>
                     </CustomButton>
                 </InputArea>
 
                 <SignMessageButton onPress={handleMessageButtonClick}>
-                    <SignMessageButtonText>Esqueci minha</SignMessageButtonText>
-                    <SignmessageButtonTextBold>Senha</SignmessageButtonTextBold>
+                    <SignMessageButtonText>Voltar para o</SignMessageButtonText>
+                    <SignmessageButtonTextBold>Login</SignmessageButtonTextBold>
                 </SignMessageButton>
+
 
             </Container>
         </BackCippa>

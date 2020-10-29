@@ -18,6 +18,7 @@ export const CustomButton = styled.TouchableOpacity`
     border-radius: 5px;
     justify-content: center;
     align-items: center;
+    margin-bottom: 50px;
 `;
 
 export const CustomButtonText = styled.Text`
@@ -30,18 +31,16 @@ export const CustomButtonText = styled.Text`
 export const SignMessageButton = styled.TouchableOpacity`
     flex-direction: row;
     justify-content: center;
-    margin-top: 50px;
-    margin-bottom: 20px;
 `;
 
 export const SignMessageButtonText = styled.Text`
     font-size: 16px;
-    color: #444444;
+    color: #FFFFFF;
 `;
 
 export const SignmessageButtonTextBold = styled.Text`
     font-size: 16px;
-    color: #444444;
+    color: #FFFFFF;
     font-weight: bold;
     margin-left: 5px;
 `;
