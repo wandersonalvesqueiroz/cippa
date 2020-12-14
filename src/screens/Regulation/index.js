@@ -4,14 +4,13 @@ import { Header, Text } from 'react-native-elements';
 import {
     Container,
     ProfileButton,
-    Line
 } from './styles';
 
 import CippaLogo from '../../assets/cippa_logo.svg';
 import UserIcon from '../../assets/icons/solid/user-circle.svg';
 import MenuIcon from '../../assets/icons/solid/bars.svg';
 
-class Inspection extends Component {
+class Regulation extends Component {
 
     handleProfileButtonClick = () => {
         this.props.navigation.reset({
@@ -44,8 +43,7 @@ class Inspection extends Component {
                 />
 
                 <View>
-                    <Text h4 style={{ textAlign: 'center', paddingTop: 20 }}>Configurações</Text>
-                    <Line />
+                    <Text h4 style={{ textAlign: 'center', paddingTop: 20 }}>Normas</Text>
                 </View>
             </Container >
         );
@@ -53,4 +51,4 @@ class Inspection extends Component {
 
 }
 
-export default Inspection;
+export default Regulation;

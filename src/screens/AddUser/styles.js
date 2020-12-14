@@ -17,14 +17,23 @@ export const ProfileButtonText = styled.Text`
     color: #FFFFFF;
 `;
 
-export const CheckButton = styled.TouchableOpacity`
-    width: 240px;
-    background-color: #1E661C;
-    padding: 20px;
-    border-radius: 10px;
-    border: 0;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    align-items: center;
+export const InputArea = styled.View`
+    padding: 20px 10px;
+    width: 100%;
 `;
 
+export const CustomButton = styled.TouchableOpacity`
+    height: 60px;
+    background-color: #539623;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+`;
+
+export const CustomButtonText = styled.Text`
+    font-size: 16px;
+    color: #FFF;
+    font-weight: bold;
+    font-family: Helvetica;
+`;

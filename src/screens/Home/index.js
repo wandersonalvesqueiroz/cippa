@@ -1,35 +1,46 @@
-import React from 'react';
-import { Text } from 'react-native';
-import { 
-    Container, 
-    Header,
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import { Header, Text } from 'react-native-elements';
+import {
+    Container,
     ProfileButton,
-    ProfileButtonText
- } from './styles';
+    CheckButton
+} from './styles';
 
 import CippaLogo from '../../assets/cippa_logo.svg';
 import UserIcon from '../../assets/icons/solid/user-circle.svg';
+import MenuIcon from '../../assets/icons/solid/bars.svg';
+import CheckIcon from '../../assets/icons/regular/check-square.svg';
+import HeaderBar from '../../components/hearder';
 
-const handleProfileButtonClick = () => {
-    navigation.reset({
-        routes: [{ name: 'RecoveryPassword' }]
-    });
+class Home extends Component{
+
+    handleProfileButtonClick = () => {
+        this.props.navigation.reset({
+            routes: [{ name: 'Profile' }]
+        });
+    }
+
+    handleCheckButtonClick = () => {
+        this.props.navigation.reset({
+            routes: [{ name: 'Inspection' }]
+        });
+    }
+
+    render(){
+        return (
+            
+            <Container>
+                <HeaderBar/>
+                <View>
+                    <CheckButton onPress={this.handleCheckButtonClick}>
+                        <CheckIcon width="50" height="50" fill="#FFFFFF" />
+                        <Text h4 style={{color: '#FFFFFF', marginTop: 10}}>VISTORIAR</Text>
+                    </CheckButton>
+                </View>
+            </Container >
+        );
+    }
 }
 
-export default () => {
-
-    return (
-        <Container>
-            <Header>
-                <CippaLogo width="100%" height="100" />
-
-                <ProfileButton onPress={handleProfileButtonClick}>
-                    <ProfileButtonText>Usuário</ProfileButtonText>
-                    <UserIcon width="40" height="40" fill="#FFFFFF" />
-                </ProfileButton>
-
-            </Header>
-            <Text>HOME</Text>
-        </Container>
-    );
-}
+export default Home;

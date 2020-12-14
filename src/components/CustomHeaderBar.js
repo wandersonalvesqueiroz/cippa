@@ -1,39 +1,44 @@
 import React from "react";
-import styled from 'styled-components/native';
+import { Header } from 'react-native-elements';
+import {
+    ProfileButton,
+    ProfileButtonText
+} from './styles';
 
-import HomeIcon from '../assets/icons/solid/home.svg';
-import InspectionIcon from '../assets/icons/solid/tasks.svg';
-import ConfigurationIcon from '../assets/icons/solid/cog.svg';
 
-const TabArea = styled.View`
-    height: 60px;
-    background-color: #1E661C;
-    flex-direction: row;
-`;
+import CippaLogo from '../assets/cippa_logo_s.svg';
+import UserIcon from '../assets/icons/solid/user-circle.svg';
+import MenuIcon from '../assets/icons/solid/bars.svg';
 
-const TabItem = styled.TouchableOpacity`
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-`;
+const handleProfileButtonClick = () => {
+    navigation.reset({
+        routes: [{ name: 'RecoveryPassword' }]
+    });
+}
 
-export default ({ state, navigation}) => {
+export default (props) => {
 
-    const goTo = (screenName) => {
-        navigation.navigate(screenName);
-    }
+    const openMenu = props.openMenu;
 
     return (
-        <TabArea>
-            <TabItem onPress={() => goTo('Home')}>
-                <HomeIcon style={{opacity: state.index === 0 ? 1 : 0.6}} width="24" height="24" fill="#FFFFFF" />
-            </TabItem>
-            <TabItem onPress={() => goTo('Inspection')}>
-                <InspectionIcon style={{opacity: state.index === 1 ? 1 : 0.6}} width="24" height="24" fill="#FFFFFF" />
-            </TabItem>
-            <TabItem onPress={() => goTo('Configuration')}>
-                <ConfigurationIcon style={{opacity: state.index === 2 ? 1 : 0.6}} width="24" height="24" fill="#FFFFFF" />
-            </TabItem>
-        </TabArea>
+        <Header
+            leftComponent={
+                <MenuIcon width="40" height="40" fill="#FFFFFF" onPress={() => openMenu} />
+            }
+            centerComponent={
+                <CippaLogo width="100%" height="80" />
+            }
+            rightComponent={
+                <ProfileButton onPress={handleProfileButtonClick}>
+                    <ProfileButtonText>Usuário</ProfileButtonText>
+                    <UserIcon width="40" height="40" fill="#FFFFFF" />
+                </ProfileButton>
+            }
+            containerStyle={{
+                backgroundColor: '#1E661C',
+                justifyContent: 'space-around',
+                height: 120
+            }}
+        />
     );
 }

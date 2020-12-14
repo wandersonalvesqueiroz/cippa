@@ -17,14 +17,14 @@ export const ProfileButtonText = styled.Text`
     color: #FFFFFF;
 `;
 
-export const CheckButton = styled.TouchableOpacity`
-    width: 240px;
-    background-color: #1E661C;
-    padding: 20px;
-    border-radius: 10px;
-    border: 0;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    align-items: center;
+export const EditUserButton = styled.TouchableOpacity`
+    
 `;
 
+export const DeleteUserButton = styled.TouchableOpacity`
+    
+`;
+
+export const AddUserButton = styled.TouchableOpacity`
+    margin: 10px;
+`;
