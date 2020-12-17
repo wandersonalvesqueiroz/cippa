@@ -1,22 +1,19 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Header, Text } from 'react-native-elements';
+import { View } from 'react-native';
+import { Text } from 'react-native-elements';
 import { DataTable } from 'react-native-paper';
 
 
 import {
     Container,
-    ProfileButton,
     EditUserButton,
     DeleteUserButton,
     AddUserButton
 } from './styles';
 
 import Api from '../../Api';
+import ScreenMainDrawer from '../../components/ScreenMainDrawer';
 
-import CippaLogo from '../../assets/cippa_logo.svg';
-import UserIcon from '../../assets/icons/solid/user-circle.svg';
-import MenuIcon from '../../assets/icons/solid/bars.svg';
 import EditUserIcon from '../../assets/icons/solid/edit.svg';
 import DeleteUserIcon from '../../assets/icons/solid/trash.svg';
 import AddIcon from '../../assets/icons/solid/plus-circle.svg';
@@ -31,14 +28,6 @@ class User extends Component {
 
     componentDidMount() {
         Api.users().then(users => this.setState({ ...this.state, usersList: users }))
-    }
-
-
-
-    handleProfileButtonClick = () => {
-        this.props.navigation.reset({
-            routes: [{ name: 'Profile' }]
-        });
     }
 
     handleAddButtonClick = () => {
@@ -89,51 +78,30 @@ class User extends Component {
     }
     render() {
         return (
-            <Container>
-                <Header
+            <ScreenMainDrawer {...this.props.navigation}>
+                <Container>
+                    <View>
+                        <Text h4 style={{ textAlign: 'center', paddingTop: 20, marginBottom: 10, justifyContent: 'flex-end' }}>Usuários</Text>
+                    </View>
 
-                    leftComponent={
-                        <MenuIcon width="36" height="36" style={{ marginLeft: 10 }} fill="#FFFFFF" onPress={() => this.props.navigation.openDrawer()} />
-                    }
-                    centerComponent={
-                        <CippaLogo width="100%" height="80" />
-                    }
-                    rightComponent={
-                        <ProfileButton onPress={this.handleProfileButtonClick}>
-                            <UserIcon width="36" height="36" fill="#FFFFFF" />
-                        </ProfileButton>
-                    }
+                    <DataTable>
+                        <DataTable.Header>
+                            <DataTable.Title style={{ flex: 15 }} >
+                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Nome</Text>
+                            </DataTable.Title>
+                            <DataTable.Title style={{ flex: 15 }}>
+                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>CPF</Text>
+                            </DataTable.Title>
+                            <DataTable.Title style={{ flex: 10, justifyContent: 'center', alignItems: 'center' }}>
+                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Status</Text>
+                            </DataTable.Title>
+                            <DataTable.Title style={{ flex: 10, justifyContent: 'center', alignItems: 'center' }} >
+                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Ações</Text>
+                            </DataTable.Title>
+                        </DataTable.Header>
 
-                    containerStyle={{
-                        backgroundColor: '#1E661C',
-                        justifyContent: 'space-around',
-                        height: 140
-                    }}
-                />
-
-                <View>
-                    <Text h4 style={{ textAlign: 'center', paddingTop: 20, marginBottom: 10, justifyContent: 'flex-end' }}>Usuários</Text>
-                </View>
-
-
-                <DataTable>
-                    <DataTable.Header>
-                        <DataTable.Title style={{ flex: 15 }} >
-                            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Nome</Text>
-                        </DataTable.Title>
-                        <DataTable.Title style={{ flex: 15 }}>
-                            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>CPF</Text>
-                        </DataTable.Title>
-                        <DataTable.Title style={{ flex: 10, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Status</Text>
-                        </DataTable.Title>
-                        <DataTable.Title style={{ flex: 10, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Ações</Text>
-                        </DataTable.Title>
-                    </DataTable.Header>
-
-                    {this.renderRows()}
-                    {/* <DataTable.Pagination
+                        {this.renderRows()}
+                        {/* <DataTable.Pagination
                         page={1}
                         numberOfPages={1}
                         onPageChange={page => {
@@ -142,14 +110,14 @@ class User extends Component {
                         label="1-2 of 6"
                     /> */}
 
-                    <AddUserButton style={{alignSelf: "flex-end"}} onPress={this.handleAddButtonClick}>
-                        <AddIcon width="50" height="50" fill="#1E661C" />
-                    </AddUserButton>
+                        <AddUserButton style={{ alignSelf: "flex-end" }} onPress={this.handleAddButtonClick}>
+                            <AddIcon width="50" height="50" fill="#1E661C" />
+                        </AddUserButton>
 
-                </DataTable>
+                    </DataTable>
 
-
-            </Container >
+                </Container >
+            </ScreenMainDrawer>
         );
     }
 

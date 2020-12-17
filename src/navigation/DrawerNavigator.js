@@ -21,6 +21,7 @@ import UserIcon from '../assets/icons/solid/user.svg';
 import InspectionIcon from '../assets/icons/solid/check.svg';
 import RegulationIcon from '../assets/icons/solid/clipboard-check.svg';
 import ConfigurationIcon from '../assets/icons/solid/cog.svg';
+import HeaderBar from '../components/Hearder';
 
 const Drawer = createDrawerNavigator();
 

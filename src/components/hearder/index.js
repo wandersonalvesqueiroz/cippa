@@ -9,16 +9,15 @@ import UserIcon from '../../assets/icons/solid/user-circle.svg';
 class HeaderBar extends Component {
 
     handleProfileButtonClick = () => {
-        this.props.navigation.reset({
+        this.props.reset({
             routes: [{ name: 'Profile' }]
         });
     }
-    
+
     render() {
-        const { navigation } = this.props;
         return (
             <View style={Style.header}>
-                <MenuIcon style={Style.icon} fill="#FFFFFF" onPress={() => this.props.navigation.navigate("openDrawer")} />
+                <MenuIcon style={Style.icon} fill="#FFFFFF" onPress={() => this.props.openDrawer()} />
                 <CippaLogo width="100" height="80" />
                 <ProfileButton onPress={this.handleProfileButtonClick}>
                     <UserIcon style={Style.icon} fill="#FFFFFF" />

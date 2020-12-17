@@ -1,11 +1,10 @@
 import React from 'react';
+import { View } from 'react-native';
 
 import MenuDrawer from '../navigation/DrawerNavigator';
-import HeaderBar from '../components/hearder';
 
 export default () => (
-    <>
-        <HeaderBar/>
+    <View style={{flex: 1}}>
         <MenuDrawer/>
-    </>
+    </View>
 );

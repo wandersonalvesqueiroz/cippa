@@ -19,6 +19,7 @@ export default StyleSheet.create({
     },
     user: {
         paddingTop: 10,
+        
     },
     userText: {
         textAlign: 'center', 
