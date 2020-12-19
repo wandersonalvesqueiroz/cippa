@@ -1,11 +1,15 @@
 import React from 'react';
 import styled from 'styled-components/native';
 
-export const Container = styled.SafeAreaView`
+export const Scroll = styled.ScrollView`
     flex: 1;
-    align-content: center;
-    align-items: center;
     background-color: #EDEDED;
+`;
+
+export const Container = styled.View`
+    flex: 1;
+    align-items: center;
+    justify-content: center;
 `;
 
 export const ProfileButton = styled.TouchableOpacity`
@@ -29,6 +33,7 @@ export const CustomButton = styled.TouchableOpacity`
     justify-content: center;
     align-items: center;
     margin-bottom: 50px;
+    padding: 15px;
 `;
 
 export const CustomButtonText = styled.Text`
@@ -44,4 +49,6 @@ export const Input = styled.TextInput`
     color: #222222;
     font-family: 'calibri';
     margin-bottom: 10px;
+    width: 94%;
+    padding: 10px;
 `;

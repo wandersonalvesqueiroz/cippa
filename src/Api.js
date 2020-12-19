@@ -51,5 +51,50 @@ export default {
         });
         const json = await req.json();
         return json;
-    }
+    },
+    user: async (userId) => {
+        const req = await fetch(`${BASE_API}/users/${userId}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type' : 'application/json'
+            }
+        });
+        const json = await req.json();
+        return json;
+    },
+    editUser: async (user) => {
+        const req = await fetch(`${BASE_API}/users/${user.id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({...user})
+        });
+        return req;
+    },
+    addUser: async (user) => {
+        const req = await fetch(`${BASE_API}/users`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({...user})
+        });
+
+        return req;
+    },
+    deleteUser: async (id) => {
+        const req = await fetch(`${BASE_API}/users/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type' : 'application/json'
+            }
+        });
+
+        return req;
+    },
 };

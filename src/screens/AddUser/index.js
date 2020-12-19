@@ -6,80 +6,177 @@ import {
     Container,
     Input,
     InputArea,
+    Scroll,
     CustomButton,
     CustomButtonText,
 } from './styles';
 
 import Api from '../../Api';
 
+const initialState = { 
+    name: '', 
+    email: '', 
+    cpf: '', 
+    dateOfBirth: '', 
+    professionalRegistry: '', 
+    rg: '', 
+    emittingOrgan: '', 
+    issueDate:'',
+    street: '',
+    number: '',
+    complement: '',
+    neighborhood: '',
+    city: '',
+    cep: ''
+}
+
 class AddUser extends Component {
 
-    handleAddUserClick = () => {
-        navigation.reset({
-            routes: [{ name: 'User' }]
-        });
+    userId = this.props.route.params?.userId ?? null
+
+    state = {
+        ...initialState
+    }
+
+    loadListUser(userId) {
+        Api.user(userId).then(user => this.setState({ ...user }))
+    }
+
+    componentDidMount() {
+        
+        if(this.userId){
+            this.loadListUser(this.userId)
+        }
+    }
+
+    saveUser = () => {
+        const newUser = {
+            ...this.state
+        }
+        if(newUser.id){
+            Api.editUser(newUser)
+                .then((res) => {
+                    if (res.ok) {
+                        alert('Cadastro alterado!')
+                        this.loadListUser(this.userId)
+                    } else {
+                        alert('Erro ao alterar cadastro!')
+                    }
+                })
+        } else {
+            Api.addUser(newUser)
+                .then((res) => {
+                    if (res.ok) {
+                        alert('Cadastro realizado!')
+                        this.setState({ ...initialState })
+                    } else {
+                        alert('Erro ao realizar cadastro!')
+                    }
+                })
+        }
     }
 
     render() {
 
-        // const [cpfField, setCpfField] = useState('');
-        // const [emailField, setEmailField] = useState('');
-        // const [confirmEmailField, setConfirmEmailField] = useState('');
-        
-        // const navigation = useNavigation();
-
-        // const handleBackButtonClick = () => {
-        //     navigation.reset({
-        //         routes: [{ name: 'User' }]
-        //     });
-        // }
-
         return (
-            <Container>
-                <View>
-                    <Text h4 style={{ textAlign: 'center', paddingTop: 20, marginBottom: 10, justifyContent: 'flex-end' }}>Cadastrar Usuário</Text>
-                </View>
+            <Scroll>
+                <Container>
+                    <View>
+                        <Text h4 style={{ textAlign: 'center', paddingTop: 20, marginBottom: 10, justifyContent: 'flex-end' }}>Cadastrar Usuário</Text>
+                    </View>
+                    <View>
+                        <Text h5 style={{ textAlign: 'center', paddingTop: 20, marginBottom: 10, justifyContent: 'flex-end' }}>Dados Gerais</Text>
+                    </View>
+                    <Input 
+                        name="name" 
+                        placeholder="Nome" 
+                        onChangeText={name => this.setState({ name })} 
+                        value={this.state.name}/>
+                    {/* <Input name="birthday" placeholder="Data de Nascimento"/> */}
+                    
+                    <Input 
+                        name="email"
+                        placeholder="E-mail"
+                        onChangeText={email => this.setState({ email })}
+                        value={this.state.email}/>
 
-
-                <Input name="name" placeholder="Nome"/>
-                <Input name="birthday" placeholder="Data de Nascimento"/>
-                <Input name="email" placeholder="E-mail"/>
-                <Input name="cpf" placeholder="CPF"/>
-                <Input name="professional_register" placeholder="Registro Profissional"/>
-                <Input name="rg" placeholder="Orgão Emissor"/>
-                <Input name="rg" placeholder="Data de Emissão"/>
-                <Input name="rg" placeholder="Logradouro"/>
-                <Input name="rg" placeholder="Número"/>
-                <Input name="rg" placeholder="Complemento"/>
-                <Input name="rg" placeholder="Bairro"/>
-                <Input name="rg" placeholder="Cidade"/>
-                <Input name="rg" placeholder="CEP"/>
-
-                    {/*
-                    <SignInput
+                    <Input name="cpf" 
                         placeholder="CPF"
-                        value={cpfField}
-                        // onChangeText={t => setCpfField(t)}
-                    />
+                        onChangeText={cpf => this.setState({ cpf })}
+                        value={this.state.cpf}
+                        />
 
-                    <SignInput
-                        IconSvg={EmailIcon}
-                        placeholder="Digite seu e-mail"
-                        // value={emailField}
-                        // onChangeText={t => setEmailField(t)}
-                    />
+                    <Input name="dateOfBirth" 
+                        placeholder="Data de Nascimento"
+                        onChangeText={dateOfBirth => this.setState({ dateOfBirth })}
+                        value={this.state.dateOfBirth}
+                        />
 
-                    <SignInput
-                        IconSvg={EmailIcon}
-                        placeholder="Confirme seu e-mail"
-                        // value={confirmEmailField}
-                        // onChangeText={t => setConfirmEmailField(t)}
-                    /> */}
+                    <Input name="professionalRegistry" 
+                        placeholder="Registro Profissional"
+                        onChangeText={professionalRegistry => this.setState({ professionalRegistry })}
+                        value={this.state.professionalRegistry}
+                        />
 
-                    <CustomButton onPress={this.handleAddUserClick}>
-                        <CustomButtonText>CADASTRAR</CustomButtonText>
-                    </CustomButton>
-            </Container >
+                    <Input name="rg" 
+                        placeholder="RG"
+                        onChangeText={rg => this.setState({ rg })}
+                        value={this.state.rg}
+                        />
+                    
+                    <Input name="emittingOrgan" 
+                        placeholder="Orgão Emissor"
+                        onChangeText={emittingOrgan => this.setState({ emittingOrgan })}
+                        value={this.state.emittingOrgan}
+                        />
+
+                    <Input name="issueDate" 
+                        placeholder="Data de Emissão"
+                        onChangeText={issueDate => this.setState({ issueDate })}
+                        value={this.state.issueDate}
+                        />
+
+                    <View>
+                        <Text h5 style={{ textAlign: 'center', paddingTop: 20, marginBottom: 10, justifyContent: 'flex-end' }}>Endereço</Text>
+                    </View>
+                    {/* Endereço */}
+                    <Input name="street" 
+                        placeholder="Rua"
+                        onChangeText={street => this.setState({ street })}
+                        value={this.state.street}
+                        />
+                    <Input name="number" 
+                        placeholder="Número"
+                        onChangeText={number => this.setState({ number })}
+                        value={this.state.number}
+                        />
+                    <Input name="complement" 
+                        placeholder="Complemento"
+                        onChangeText={complement => this.setState({ complement })}
+                        value={this.state.complement}
+                        />
+                    <Input name="neighborhood" 
+                        placeholder="Bairro"
+                        onChangeText={neighborhood => this.setState({ neighborhood })}
+                        value={this.state.neighborhood}
+                        />
+                    <Input name="city" 
+                        placeholder="Cidade"
+                        onChangeText={city => this.setState({ city })}
+                        value={this.state.city}
+                        />
+                    <Input name="cep" 
+                        placeholder="CEP"
+                        onChangeText={cep => this.setState({ cep })}
+                        value={this.state.cep}
+                        />
+                    
+
+                        <CustomButton onPress={this.saveUser}>
+                            <CustomButtonText>CADASTRAR</CustomButtonText>
+                        </CustomButton>
+                </Container>
+            </Scroll>
         );
     }
 

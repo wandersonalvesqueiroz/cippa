@@ -28,8 +28,25 @@ class User extends Component {
         }
     }
 
-    componentDidMount() {
+    loadListUsers() {
         Api.users().then(users => this.setState({ ...this.state, usersList: users }))
+    }
+
+    deleteUser(id) {
+        Api.deleteUser(id)
+        .then(res => {
+                if(res.ok){
+                    alert('Cadastro Excluído!')
+                    this.loadListUsers()
+                }else{
+                    alert('Erro ao excluir cadastro!')
+                }
+            }
+        )
+    }
+
+    componentDidMount() {
+        this.loadListUsers()
     }
 
     handleAddButtonClick = () => {
@@ -60,7 +77,7 @@ class User extends Component {
                         alignItems: 'center'
                     }}
                 >
-                    <EditUserButton>
+                    <EditUserButton onPress = {() => this.props.navigation.navigate('AddUser', {userId: user.id})}>
                         <EditUserIcon width="20" height="20" fill="#EA8C00" />
                     </EditUserButton>
                 </DataTable.Cell>
@@ -71,7 +88,7 @@ class User extends Component {
                         alignItems: 'center'
                     }}
                 >
-                    <DeleteUserButton>
+                    <DeleteUserButton onPress={() => this.deleteUser(user.id)}>
                         <DeleteUserIcon width="20" height="20" fill="#B90000" />
                     </DeleteUserButton>
                 </DataTable.Cell>
