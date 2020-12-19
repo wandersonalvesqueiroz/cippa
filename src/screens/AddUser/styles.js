@@ -37,3 +37,11 @@ export const CustomButtonText = styled.Text`
     font-weight: bold;
     font-family: Helvetica;
 `;
+
+export const Input = styled.TextInput`
+    background: #FFF;
+    font-size: 16px;
+    color: #222222;
+    font-family: 'calibri';
+    margin-bottom: 10px;
+`;

@@ -23,6 +23,8 @@ import RegulationIcon from '../assets/icons/solid/clipboard-check.svg';
 import ConfigurationIcon from '../assets/icons/solid/cog.svg';
 import HeaderBar from '../components/Hearder';
 
+import UserStack from '../stacks/UserStack'
+
 const Drawer = createDrawerNavigator();
 
 function Logout() {
@@ -63,7 +65,7 @@ export default () => (
                 drawerIcon: config => <HomeIcon width="24" height="24" fill="#FFFFFF" />
             }}
         />
-        <Drawer.Screen name="User" component={User}
+        <Drawer.Screen name="User" component={UserStack}
             options={{
                 drawerLabel: 'Usuários',
                 drawerIcon: config => <UserIcon width="24" height="24" fill="#FFFFFF" />

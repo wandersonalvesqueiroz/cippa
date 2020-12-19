@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-elements';
 import { DataTable } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
 
 import {
@@ -17,6 +18,7 @@ import ScreenMainDrawer from '../../components/ScreenMainDrawer';
 import EditUserIcon from '../../assets/icons/solid/edit.svg';
 import DeleteUserIcon from '../../assets/icons/solid/trash.svg';
 import AddIcon from '../../assets/icons/solid/plus-circle.svg';
+import { screensEnabled } from 'react-native-screens';
 
 class User extends Component {
     constructor(props) {
@@ -35,7 +37,7 @@ class User extends Component {
             routes: [{ name: 'AddUser' }]
         });
     }
-
+    
     renderRows = () => {
 
         const list = this.state.usersList
@@ -77,6 +79,9 @@ class User extends Component {
         ))
     }
     render() {
+
+        
+
         return (
             <ScreenMainDrawer {...this.props.navigation}>
                 <Container>
@@ -110,14 +115,14 @@ class User extends Component {
                         label="1-2 of 6"
                     /> */}
 
-                        <AddUserButton style={{ alignSelf: "flex-end" }} onPress={this.handleAddButtonClick}>
+                        <AddUserButton style={{ alignSelf: "flex-end" }} onPress={() => this.props.navigation.navigate('AddUser')}>
                             <AddIcon width="50" height="50" fill="#1E661C" />
                         </AddUserButton>
 
                     </DataTable>
 
                 </Container >
-            </ScreenMainDrawer>
+           </ScreenMainDrawer>
         );
     }
 
