@@ -97,4 +97,60 @@ export default {
 
         return req;
     },
+    standards: async () => {
+        const req = await fetch(`${BASE_API}/standards`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type' : 'application/json'
+            }
+        });
+        const json = await req.json();
+        return json;
+    },
+    standard: async (standardId) => {
+        const req = await fetch(`${BASE_API}/standards/${standardId}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type' : 'application/json'
+            }
+        });
+        const json = await req.json();
+        return json;
+    },
+    editStandard: async (standard) => {
+        const req = await fetch(`${BASE_API}/standards/${standard.id}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({...standard})
+        });
+        return req;
+    },
+    addStandard: async (standard) => {
+        const req = await fetch(`${BASE_API}/standards`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({...standard})
+        });
+
+        return req;
+    },
+    deleteStandard: async (id) => {
+        const req = await fetch(`${BASE_API}/standards/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type' : 'application/json'
+            }
+        });
+
+        return req;
+    },
 };

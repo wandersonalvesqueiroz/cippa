@@ -11,6 +11,8 @@ import Inspection from '../screens/Inspection';
 import Regulation from '../screens/Regulation';
 import User from '../screens/User';
 import AddUser from '../screens/AddUser';
+import Standard from '../screens/Standard';
+import AddStandard from '../screens/AddStandard';
 import Configuration from '../screens/Configuration';
 
 
@@ -34,6 +36,8 @@ export default () => (
         <Stack.Screen name="Regulation" component={Regulation} />
         <Stack.Screen name="User" component={User} />
         <Stack.Screen name="AddUser" component={AddUser} />
+        <Stack.Screen name="Standard" component={Standard} />
+        <Stack.Screen name="AddStandard" component={AddStandard} />
         <Stack.Screen name="Configuration" component={Configuration} />
     </Stack.Navigator>
 );

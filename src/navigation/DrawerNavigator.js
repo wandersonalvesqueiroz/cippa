@@ -24,6 +24,7 @@ import ConfigurationIcon from '../assets/icons/solid/cog.svg';
 import HeaderBar from '../components/Hearder';
 
 import UserStack from '../stacks/UserStack'
+import StandardStack from '../stacks/StandardStack'
 
 const Drawer = createDrawerNavigator();
 
@@ -77,7 +78,7 @@ export default () => (
                 drawerIcon: config => <InspectionIcon width="24" height="24" fill="#FFFFFF" />
             }}
         />
-        <Drawer.Screen name="Regulation" component={Regulation}
+        <Drawer.Screen name="Regulation" component={StandardStack}
             options={{
                 drawerLabel: 'Normas',
                 drawerIcon: config => <RegulationIcon width="24" height="24" fill="#FFFFFF" />
