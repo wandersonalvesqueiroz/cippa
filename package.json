@@ -34,6 +34,12 @@
     "react-native-swiper": "^1.6.0",
     "react-native-table-component": "^1.2.1",
     "react-native-vector-icons": "^7.1.0",
+    "react-redux": "^7.2.2",
+    "redux": "^4.0.5",
+    "redux-form": "^8.3.7",
+    "redux-multi": "^0.1.12",
+    "redux-promise": "^0.6.0",
+    "redux-thunk": "^2.3.0",
     "reload": "^3.1.0",
     "styled-components": "^5.2.0"
   },

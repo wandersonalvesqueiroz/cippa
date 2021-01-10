@@ -1,5 +1,11 @@
 import React, { useState, Component } from 'react';
-import { StyleSheet, View, TextInput, ScrollView} from 'react-native';
+import { showUpdate, create, update } from '../../redux/users/action/usersAction'
+import { reduxForm, Field, formValueSelector } from 'redux-form'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
+import { StyleSheet, View, TextInput, ScrollView } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { Text } from 'react-native-elements';
 
 import {
@@ -11,73 +17,45 @@ import {
     CustomButtonText,
 } from './styles';
 
-import Api from '../../Api';
+const renderField = ({ placeholder, keyboardType = "default", input, type }) => {
+    return (
+        <Input {...input} placeholder={placeholder} keyboardType={keyboardType} style={type?{display: 'none'}:null}/>
+    );
+};
 
 const initialState = { 
-    name: '', 
-    email: '', 
-    cpf: '', 
-    dateOfBirth: '', 
-    professionalRegistry: '', 
-    rg: '', 
-    emittingOrgan: '', 
-    issueDate:'',
-    street: '',
-    number: '',
-    complement: '',
-    neighborhood: '',
-    city: '',
-    cep: ''
+    category: ''
 }
 
 class AddUser extends Component {
-
-    userId = this.props.route.params?.userId ?? null
 
     state = {
         ...initialState
     }
 
-    loadListUser(userId) {
-        Api.user(userId).then(user => this.setState({ ...user }))
-    }
+
+    userId = this.props.route.params?.userId ?? null
+    isAddMode = !this.userId;
 
     componentDidMount() {
-        
-        if(this.userId){
-            this.loadListUser(this.userId)
+        if (this.userId) {
+            this.props.showUpdate(this.userId)
+            
+            this.setState({category: this.props.role})
         }
     }
 
-    saveUser = () => {
-        const newUser = {
-            ...this.state
-        }
-        if(newUser.id){
-            Api.editUser(newUser)
-                .then((res) => {
-                    if (res.ok) {
-                        alert('Cadastro alterado!')
-                        this.loadListUser(this.userId)
-                    } else {
-                        alert('Erro ao alterar cadastro!')
-                    }
-                })
-        } else {
-            Api.addUser(newUser)
-                .then((res) => {
-                    if (res.ok) {
-                        alert('Cadastro realizado!')
-                        this.setState({ ...initialState })
-                    } else {
-                        alert('Erro ao realizar cadastro!')
-                    }
-                })
-        }
+    onSubmit = (formData) => {
+        this.isAddMode ? this.props.create(formData) : this.props.update(formData)
     }
+
+
 
     render() {
 
+        const { handleSubmit, role } = this.props
+        console.log(this.props.role)
+        
         return (
             <Scroll>
                 <Container>
@@ -87,94 +65,121 @@ class AddUser extends Component {
                     <View>
                         <Text h5 style={{ textAlign: 'center', paddingTop: 20, marginBottom: 10, justifyContent: 'flex-end' }}>Dados Gerais</Text>
                     </View>
-                    <Input 
-                        name="name" 
-                        placeholder="Nome" 
-                        onChangeText={name => this.setState({ name })} 
-                        value={this.state.name}/>
-                    {/* <Input name="birthday" placeholder="Data de Nascimento"/> */}
-                    
-                    <Input 
+                    <Field
+                        name="name"
+                        placeholder="Nome"
+                        component={renderField}
+                    />
+                    <Field
                         name="email"
-                        placeholder="E-mail"
-                        onChangeText={email => this.setState({ email })}
-                        value={this.state.email}/>
+                        placeholder="Email"
+                        component={renderField}
+                        keyboardType = "email-address"
+                    />
 
-                    <Input name="cpf" 
+                    <Field
+                        name="cpf"
                         placeholder="CPF"
-                        onChangeText={cpf => this.setState({ cpf })}
-                        value={this.state.cpf}
-                        />
+                        component={renderField}
+                        keyboardType = "number-pad"
+                    />
 
-                    <Input name="dateOfBirth" 
+                    <Field
+                        name="dateOfBirth"
                         placeholder="Data de Nascimento"
-                        onChangeText={dateOfBirth => this.setState({ dateOfBirth })}
-                        value={this.state.dateOfBirth}
-                        />
+                        component={renderField}
+                        keyboardType = "number-pad"
+                    />
 
-                    <Input name="professionalRegistry" 
+                    <Field
+                        name="professionalRegistry"
                         placeholder="Registro Profissional"
-                        onChangeText={professionalRegistry => this.setState({ professionalRegistry })}
-                        value={this.state.professionalRegistry}
-                        />
+                        component={renderField}
+                    />
 
-                    <Input name="rg" 
+                    <Field
+                        name="rg"
                         placeholder="RG"
-                        onChangeText={rg => this.setState({ rg })}
-                        value={this.state.rg}
-                        />
-                    
-                    <Input name="emittingOrgan" 
-                        placeholder="Orgão Emissor"
-                        onChangeText={emittingOrgan => this.setState({ emittingOrgan })}
-                        value={this.state.emittingOrgan}
-                        />
+                        component={renderField}
+                    />
 
-                    <Input name="issueDate" 
+                    <Field
+                        name="emittingOrgan"
+                        placeholder="Orgão Emissor"
+                        component={renderField}
+                    />
+
+                    <Field
+                        name="issueDate"
                         placeholder="Data de Emissão"
-                        onChangeText={issueDate => this.setState({ issueDate })}
-                        value={this.state.issueDate}
-                        />
+                        component={renderField}
+                        keyboardType = "number-pad"
+                    />
 
                     <View>
                         <Text h5 style={{ textAlign: 'center', paddingTop: 20, marginBottom: 10, justifyContent: 'flex-end' }}>Endereço</Text>
                     </View>
-                    {/* Endereço */}
-                    <Input name="street" 
-                        placeholder="Rua"
-                        onChangeText={street => this.setState({ street })}
-                        value={this.state.street}
-                        />
-                    <Input name="number" 
-                        placeholder="Número"
-                        onChangeText={number => this.setState({ number })}
-                        value={this.state.number}
-                        />
-                    <Input name="complement" 
-                        placeholder="Complemento"
-                        onChangeText={complement => this.setState({ complement })}
-                        value={this.state.complement}
-                        />
-                    <Input name="neighborhood" 
-                        placeholder="Bairro"
-                        onChangeText={neighborhood => this.setState({ neighborhood })}
-                        value={this.state.neighborhood}
-                        />
-                    <Input name="city" 
-                        placeholder="Cidade"
-                        onChangeText={city => this.setState({ city })}
-                        value={this.state.city}
-                        />
-                    <Input name="cep" 
-                        placeholder="CEP"
-                        onChangeText={cep => this.setState({ cep })}
-                        value={this.state.cep}
-                        />
-                    
 
-                        <CustomButton onPress={this.saveUser}>
-                            <CustomButtonText>CADASTRAR</CustomButtonText>
-                        </CustomButton>
+                    <Field
+                        name="street"
+                        placeholder="Rua"
+                        component={renderField}
+                    />
+
+                    <Field
+                        name="number"
+                        placeholder="Número"
+                        component={renderField}
+                    />
+
+                    <Field
+                        name="complement"
+                        placeholder="Complemento"
+                        component={renderField}
+                    />
+
+                    <Field
+                        name="neighborhood"
+                        placeholder="Bairro"
+                        component={renderField}
+                    />
+                    <Field
+                        name="city"
+                        placeholder="Cidade"
+                        component={renderField}
+                    />
+                    <Field
+                        name="cep"
+                        placeholder="CEP"
+                        component={renderField}
+                        keyboardType = "number-pad"
+                    />
+
+                    <View>
+                        <Text h5 style={{ textAlign: 'center', paddingTop: 20, marginBottom: 10, justifyContent: 'flex-end' }}>Permissão de acesso</Text>
+                    </View>
+                    <Field
+                        component={renderField}
+                        name="role"
+                        type="hidden"
+                        style={{ height: 0 }}
+                    />
+                    <Picker
+                        selectedValue={this.state.category}
+                        style={{fontSize: 16, width: '94%', backgroundColor: '#FFF', marginBottom: 10}}
+                        onValueChange={(itemValue, itemIndex) =>{
+                            this.setState({category: itemValue})
+                            this.props.change("role", itemValue);
+                            }
+                        }>
+                        <Picker.Item label="Administrador" value="administrator" />
+                        <Picker.Item label="Vistoriador" value="vistoriador" />
+                    </Picker>
+
+
+                    <CustomButton onPress={handleSubmit(this.onSubmit)}>
+                        <CustomButtonText>{this.isAddMode ? "CADASTRAR" : "ALTERAR"}</CustomButtonText>
+                    </CustomButton>
                 </Container>
             </Scroll>
         );
@@ -182,4 +187,12 @@ class AddUser extends Component {
 
 }
 
-export default AddUser;
+AddUser = reduxForm({ form: 'userForm' })(AddUser)
+const mapDispactchToProps = dispatch => bindActionCreators({ showUpdate, create, update }, dispatch)
+const selector = formValueSelector('userForm')
+const mapStateToProps = state => ({role: selector(state, 'role')})
+export default connect(state => {
+    // can select values individually
+    const role = selector(state, 'role')
+    return {role}}
+    , mapDispactchToProps)(AddUser)

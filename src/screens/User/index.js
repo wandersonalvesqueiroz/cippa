@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
+import { getList, destroy } from '../../redux/users/action/usersAction'
+
 import { View } from 'react-native';
 import { Text } from 'react-native-elements';
 import { DataTable } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-
 
 import {
     Container,
@@ -12,13 +15,11 @@ import {
     AddUserButton
 } from './styles';
 
-import Api from '../../Api';
 import ScreenMainDrawer from '../../components/ScreenMainDrawer';
 
 import EditUserIcon from '../../assets/icons/solid/edit.svg';
 import DeleteUserIcon from '../../assets/icons/solid/trash.svg';
 import AddIcon from '../../assets/icons/solid/plus-circle.svg';
-import { screensEnabled } from 'react-native-screens';
 
 class User extends Component {
     constructor(props) {
@@ -28,26 +29,9 @@ class User extends Component {
         }
     }
 
-    loadListUsers() {
-        Api.users().then(users => this.setState({ ...this.state, usersList: users }))
-    }
-
-    deleteUser(id) {
-        Api.deleteUser(id)
-        .then(res => {
-                if(res.ok){
-                    alert('Cadastro Excluído!')
-                    this.loadListUsers()
-                }else{
-                    alert('Erro ao excluir cadastro!')
-                }
-            }
-        )
-    }
-
     componentDidMount() {
-        this.loadListUsers()
-    }
+        this.props.getList()
+    }    
 
     handleAddButtonClick = () => {
         this.props.navigation.reset({
@@ -56,8 +40,7 @@ class User extends Component {
     }
     
     renderRows = () => {
-
-        const list = this.state.usersList
+        const list = this.props.list
 
         return list.map(user => (
             <DataTable.Row key={user.id}>
@@ -88,7 +71,7 @@ class User extends Component {
                         alignItems: 'center'
                     }}
                 >
-                    <DeleteUserButton onPress={() => this.deleteUser(user.id)}>
+                    <DeleteUserButton onPress={() => this.props.destroy(user.id)}>
                         <DeleteUserIcon width="20" height="20" fill="#B90000" />
                     </DeleteUserButton>
                 </DataTable.Cell>
@@ -145,4 +128,6 @@ class User extends Component {
 
 }
 
-export default User;
+const mapStateToProps = state => ({list: state.Users.listUsers})
+const mapDispatchToProps = dispatch => bindActionCreators({getList, destroy}, dispatch)
+export default connect(mapStateToProps, mapDispatchToProps)(User)
