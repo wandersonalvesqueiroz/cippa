@@ -23,16 +23,8 @@ const renderField = ({ placeholder, keyboardType = "default", input, type }) => 
     );
 };
 
-const initialState = { 
-    category: ''
-}
 
 class AddUser extends Component {
-
-    state = {
-        ...initialState
-    }
-
 
     userId = this.props.route.params?.userId ?? null
     isAddMode = !this.userId;
@@ -41,7 +33,7 @@ class AddUser extends Component {
         if (this.userId) {
             this.props.showUpdate(this.userId)
             
-            this.setState({category: this.props.role})
+            // this.setState({category: this.props.role})
         }
     }
 
@@ -49,12 +41,9 @@ class AddUser extends Component {
         this.isAddMode ? this.props.create(formData) : this.props.update(formData)
     }
 
-
-
     render() {
 
-        const { handleSubmit, role } = this.props
-        console.log(this.props.role)
+        const { handleSubmit, category } = this.props
         
         return (
             <Scroll>
@@ -165,7 +154,7 @@ class AddUser extends Component {
                         style={{ height: 0 }}
                     />
                     <Picker
-                        selectedValue={this.state.category}
+                        selectedValue={this.props.category}
                         style={{fontSize: 16, width: '94%', backgroundColor: '#FFF', marginBottom: 10}}
                         onValueChange={(itemValue, itemIndex) =>{
                             this.setState({category: itemValue})
@@ -190,9 +179,5 @@ class AddUser extends Component {
 AddUser = reduxForm({ form: 'userForm' })(AddUser)
 const mapDispactchToProps = dispatch => bindActionCreators({ showUpdate, create, update }, dispatch)
 const selector = formValueSelector('userForm')
-const mapStateToProps = state => ({role: selector(state, 'role')})
-export default connect(state => {
-    // can select values individually
-    const role = selector(state, 'role')
-    return {role}}
-    , mapDispactchToProps)(AddUser)
+const mapStateToProps = state => {return {category: selector(state, 'role')}}
+export default connect(mapStateToProps, mapDispactchToProps)(AddUser)
