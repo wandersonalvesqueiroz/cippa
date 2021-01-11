@@ -9,34 +9,45 @@ import {
 
 
 import Home from '../screens/Home';
-import User from '../screens/User';
+// import User from '../screens/User';
 import AddUser from '../screens/AddUser';
+import AddCompany from '../screens/AddCompany';
 import Profile from '../screens/Profile';
 import Inspection from '../screens/Inspection';
-import Regulation from '../screens/Regulation';
+// import Regulation from '../screens/Regulation';
 import Configuration from '../screens/Configuration';
 
 import HomeIcon from '../assets/icons/solid/home.svg';
 import UserIcon from '../assets/icons/solid/user.svg';
+import CompanyIcon from '../assets/icons/solid/building.svg';
 import InspectionIcon from '../assets/icons/solid/check.svg';
 import RegulationIcon from '../assets/icons/solid/clipboard-check.svg';
 import ConfigurationIcon from '../assets/icons/solid/cog.svg';
-import HeaderBar from '../components/Hearder';
+// import HeaderBar from '../components/Hearder';
 
 import UserStack from '../stacks/UserStack'
 import StandardStack from '../stacks/StandardStack'
+import CompanyStack from '../stacks/CompanyStack'
+
+import AsyncStorage from '@react-native-community/async-storage';
+// import { useNavigation } from '@react-navigation/native';
 
 const Drawer = createDrawerNavigator();
+// const navigation = useNavigation();
 
-function Logout() {
+async function Logout() {
+    // console.log('teste');
+    
+    await AsyncStorage.clear();
+    // navigation.navigate('SignIn');
 }
 
 function CustomDrawerContent(props) {
     return (
         <DrawerContentScrollView {...props}>
             <DrawerItemList {...props} />
-            <DrawerItem label={() => <Text style={{ fontSize: 20, color: 'white', justifyContent: "flex-end"}}>Sair</Text>}
-                onPress={() => alert('Sair')}
+            <DrawerItem label={() => <Text style={{ fontSize: 20, color: 'white', justifyContent: "flex-end" }}>Sair</Text>}
+                onPress={Logout}
             />
         </DrawerContentScrollView>
     );
@@ -70,6 +81,12 @@ export default () => (
             options={{
                 drawerLabel: 'Usuários',
                 drawerIcon: config => <UserIcon width="24" height="24" fill="#FFFFFF" />
+            }}
+        />
+        <Drawer.Screen name="Company" component={CompanyStack}
+            options={{
+                drawerLabel: 'Empresas',
+                drawerIcon: config => <CompanyIcon width="24" height="24" fill="#FFFFFF" />
             }}
         />
         <Drawer.Screen name="Inspection" component={Inspection}

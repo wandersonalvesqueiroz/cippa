@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import { showUpdate, create, update } from '../../redux/users/action/usersAction'
+import { showUpdate, create, update } from '../../redux/companies/action/companiesAction'
 import { reduxForm, Field, formValueSelector } from 'redux-form'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -19,21 +19,19 @@ import {
 
 const renderField = ({ placeholder, keyboardType = "default", input, type }) => {
     return (
-        <Input {...input} placeholder={placeholder} keyboardType={keyboardType} style={type?{display: 'none'}:null}/>
+        <Input {...input} placeholder={placeholder} keyboardType={keyboardType} style={type ? { display: 'none' } : null} />
     );
 };
 
 
-class AddUser extends Component {
+class AddCompany extends Component {
 
-    userId = this.props.route.params?.userId ?? null
-    isAddMode = !this.userId;
+    companyId = this.props.route.params?.companyId ?? null
+    isAddMode = !this.companyId;
 
     componentDidMount() {
-        if (this.userId) {
-            this.props.showUpdate(this.userId)
-            
-            // this.setState({category: this.props.role})
+        if (this.companyId) {
+            this.props.showUpdate(this.companyId)
         }
     }
 
@@ -44,66 +42,64 @@ class AddUser extends Component {
     render() {
 
         const { handleSubmit, category } = this.props
-        
+
         return (
             <Scroll>
                 <Container>
                     <View>
-                        <Text h4 style={{ textAlign: 'center', paddingTop: 20, marginBottom: 10, justifyContent: 'flex-end' }}>{this.isAddMode ? "Cadastrar" : "Editando"} Usuário</Text>
+                        <Text h4 style={{ textAlign: 'center', paddingTop: 20, marginBottom: 10, justifyContent: 'flex-end' }}>{this.isAddMode ? "Cadastrar" : "Editando"} Empresa</Text>
                     </View>
                     <View>
                         <Text h5 style={{ textAlign: 'center', paddingTop: 20, marginBottom: 10, justifyContent: 'flex-end' }}>Dados Gerais</Text>
                     </View>
                     <Field
                         name="name"
-                        placeholder="Nome"
+                        placeholder="Razão Social"
                         component={renderField}
                     />
+                    <Field
+                        name="companyName"
+                        placeholder="Nome Fantasia"
+                        component={renderField}
+                    />
+
+                    <Field
+                        name="cnpj"
+                        placeholder="CNPJ"
+                        component={renderField}
+                        keyboardType="number-pad"
+                    />
+
                     <Field
                         name="email"
-                        placeholder="Email"
+                        placeholder="E-mail"
                         component={renderField}
-                        keyboardType = "email-address"
+                        keyboardType="email-address"
                     />
 
                     <Field
-                        name="cpf"
-                        placeholder="CPF"
+                        name="tel"
+                        placeholder="Telefone"
                         component={renderField}
-                        keyboardType = "number-pad"
+                        keyboardType="number-pad"
                     />
 
                     <Field
-                        name="dateOfBirth"
-                        placeholder="Data de Nascimento"
                         component={renderField}
-                        keyboardType = "number-pad"
+                        name="category"
+                        type="hidden"
+                        style={{ height: 0 }}
                     />
-
-                    <Field
-                        name="professionalRegistry"
-                        placeholder="Registro Profissional"
-                        component={renderField}
-                    />
-
-                    <Field
-                        name="rg"
-                        placeholder="RG"
-                        component={renderField}
-                    />
-
-                    <Field
-                        name="emittingOrgan"
-                        placeholder="Orgão Emissor"
-                        component={renderField}
-                    />
-
-                    <Field
-                        name="issueDate"
-                        placeholder="Data de Emissão"
-                        component={renderField}
-                        keyboardType = "number-pad"
-                    />
+                    <Picker
+                        selectedValue={this.props.category}
+                        style={{ fontSize: 16, width: '94%', backgroundColor: '#FFF', marginBottom: 10 }}
+                        onValueChange={(itemValue, itemIndex) => {
+                            this.setState({ category: itemValue })
+                            this.props.change("category", itemValue);
+                        }
+                        }>
+                        <Picker.Item label="Segurança do Trabalho" value="Segurança do Trabalho" />
+                    </Picker>
 
                     <View>
                         <Text h5 style={{ textAlign: 'center', paddingTop: 20, marginBottom: 10, justifyContent: 'flex-end' }}>Endereço</Text>
@@ -132,39 +128,19 @@ class AddUser extends Component {
                         placeholder="Bairro"
                         component={renderField}
                     />
+
                     <Field
                         name="city"
                         placeholder="Cidade"
                         component={renderField}
                     />
+
                     <Field
                         name="cep"
                         placeholder="CEP"
                         component={renderField}
-                        keyboardType = "number-pad"
+                        keyboardType="number-pad"
                     />
-
-                    <View>
-                        <Text h5 style={{ textAlign: 'center', paddingTop: 20, marginBottom: 10, justifyContent: 'flex-end' }}>Permissão de acesso</Text>
-                    </View>
-                    <Field
-                        component={renderField}
-                        name="role"
-                        type="hidden"
-                        style={{ height: 0 }}
-                    />
-                    <Picker
-                        selectedValue={this.props.category}
-                        style={{fontSize: 16, width: '94%', backgroundColor: '#FFF', marginBottom: 10}}
-                        onValueChange={(itemValue, itemIndex) =>{
-                            this.setState({category: itemValue})
-                            this.props.change("role", itemValue);
-                            }
-                        }>
-                        <Picker.Item label="Administrador" value="administrator" />
-                        <Picker.Item label="Vistoriador" value="vistoriador" />
-                    </Picker>
-
 
                     <CustomButton onPress={handleSubmit(this.onSubmit)}>
                         <CustomButtonText>{this.isAddMode ? "CADASTRAR" : "ALTERAR"}</CustomButtonText>
@@ -176,8 +152,8 @@ class AddUser extends Component {
 
 }
 
-AddUser = reduxForm({ form: 'userForm' })(AddUser)
+AddCompany = reduxForm({ form: 'companyForm' })(AddCompany)
 const mapDispactchToProps = dispatch => bindActionCreators({ showUpdate, create, update }, dispatch)
-const selector = formValueSelector('userForm')
-const mapStateToProps = state => {return {category: selector(state, 'role')}}
-export default connect(mapStateToProps, mapDispactchToProps)(AddUser)
+const selector = formValueSelector('companyForm')
+const mapStateToProps = state => { return { category: selector(state, 'category') } }
+export default connect(mapStateToProps, mapDispactchToProps)(AddCompany)
