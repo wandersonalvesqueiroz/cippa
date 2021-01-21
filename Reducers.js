@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 import UsersReducer from './src/redux/users/reducers/usersReducer'
 import CompaniesReducer from './src/redux/companies/reducers/companiesReducer'
-// import StandardsReducer from './redux/standards/reducers/standardsReducer'
+import StandardsReducer from './src/redux/standards/reducers/standardsReducer'
 // import PermissionsReducer from './redux/permissions/reducers/permissionsReducer'
 
 const rootReducer = combineReducers({
@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
     form: formReducer,
     Users: UsersReducer,
     Companies: CompaniesReducer,
-    // Standards: StandardsReducer,
+    Standards: StandardsReducer,
     // Roles: PermissionsReducer,
 })
 
