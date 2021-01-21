@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
+import { getList, destroy } from '../../redux/standards/action/standardsAction'
+
 import { View } from 'react-native';
 import { Text } from 'react-native-elements';
 import { DataTable } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-
 
 import {
     Container,
@@ -12,42 +15,20 @@ import {
     AddStandardButton
 } from './styles';
 
-import Api from '../../Api';
 import ScreenMainDrawer from '../../components/ScreenMainDrawer';
 
 import EditStandardIcon from '../../assets/icons/solid/edit.svg';
 import DeleteStandardIcon from '../../assets/icons/solid/trash.svg';
 import AddIcon from '../../assets/icons/solid/plus-circle.svg';
-import { screensEnabled } from 'react-native-screens';
 
 class Standard extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            standardsList: []
-        }
-    }
-
-    loadListStandards() {
-        Api.standards().then(standards => this.setState({ ...this.state, standardsList: standards }))
-    }
-
-    deleteStandard(id) {
-        Api.deleteStandard(id)
-        .then(res => {
-                if(res.ok){
-                    alert('Cadastro Excluído!')
-                    this.loadListStandards()
-                }else{
-                    alert('Erro ao excluir cadastro!')
-                }
-            }
-        )
     }
 
     componentDidMount() {
-        this.loadListStandards()
-    }
+        this.props.getList()
+    }    
 
     handleAddButtonClick = () => {
         this.props.navigation.reset({
@@ -56,8 +37,7 @@ class Standard extends Component {
     }
     
     renderRows = () => {
-
-        const list = this.state.standardsList
+        const list = this.props.list
 
         return list.map(standard => (
             <DataTable.Row key={standard.id}>
@@ -88,7 +68,7 @@ class Standard extends Component {
                         alignItems: 'center'
                     }}
                 >
-                    <DeleteStandardButton onPress={() => this.deleteStandard(standard.id)}>
+                    <DeleteStandardButton onPress={() => this.props.destroy(standard.id)}>
                         <DeleteStandardIcon width="20" height="20" fill="#B90000" />
                     </DeleteStandardButton>
                 </DataTable.Cell>
@@ -145,4 +125,6 @@ class Standard extends Component {
 
 }
 
-export default Standard;
+const mapStateToProps = state => ({list: state.Standards.listStandards})
+const mapDispatchToProps = dispatch => bindActionCreators({getList, destroy}, dispatch)
+export default connect(mapStateToProps, mapDispatchToProps)(Standard)

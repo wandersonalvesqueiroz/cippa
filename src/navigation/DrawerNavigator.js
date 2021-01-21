@@ -21,7 +21,7 @@ import HomeIcon from '../assets/icons/solid/home.svg';
 import UserIcon from '../assets/icons/solid/user.svg';
 import CompanyIcon from '../assets/icons/solid/building.svg';
 import InspectionIcon from '../assets/icons/solid/check.svg';
-import RegulationIcon from '../assets/icons/solid/clipboard-check.svg';
+import StandardIcon from '../assets/icons/solid/clipboard-check.svg';
 import ConfigurationIcon from '../assets/icons/solid/cog.svg';
 // import HeaderBar from '../components/Hearder';
 
@@ -95,10 +95,10 @@ export default () => (
                 drawerIcon: config => <InspectionIcon width="24" height="24" fill="#FFFFFF" />
             }}
         />
-        <Drawer.Screen name="Regulation" component={StandardStack}
+        <Drawer.Screen name="Standard" component={StandardStack}
             options={{
                 drawerLabel: 'Normas',
-                drawerIcon: config => <RegulationIcon width="24" height="24" fill="#FFFFFF" />
+                drawerIcon: config => <StandardIcon width="24" height="24" fill="#FFFFFF" />
             }}
         />
         <Drawer.Screen name="Configuration" component={Configuration}

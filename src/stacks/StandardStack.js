@@ -16,8 +16,6 @@ export default () => (
             headerBackTitleVisible: true,
             headerTitle: ''
         }}
-        
-
     >
         <Stack.Screen name="Standard" component={Standard} options={{ headerShown: false }}/>
         <Stack.Screen name="AddStandard" component={AddStandard} />

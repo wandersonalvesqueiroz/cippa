@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import HeaderBar from '../hearder';
+import HeaderBar from '../Hearder';
 
 class ScreenMainDrawer extends Component {
 

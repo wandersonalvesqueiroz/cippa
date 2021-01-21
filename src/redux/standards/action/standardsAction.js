@@ -1,18 +1,17 @@
-import api from '../../../services/api'
-import { toastr } from 'react-redux-toastr'
+import api from '../../../Api2'
 import { reset as resetForm, initialize } from 'redux-form'
 
 export function  getList() {
     const request = api.get("standards")
+    
     return {
-        type: 'STANDARD_FETCHED',
+        type: 'STANDARDS_FETCHED',
         payload: request
     }
 }
 
 
 export function create(values){
-
     return submit(values, 'post')
 }
 
@@ -22,11 +21,10 @@ export function update(values){
 
 function submit(values, method){
     const id = values.id ? values.id : ''
-
     return dispatch => {
         api[method](`/standards/${id}`, values)
             .then(resp => {
-                toastr.success('Sucesso', 'Operação realizada com sucesso.')
+                alert('Operação realizada com sucesso!')
                 if (id) {
                     dispatch([showUpdate(id)])
                 }
@@ -37,7 +35,7 @@ function submit(values, method){
             .catch(e => {
                 if (e.response) {
                     // Request made and server responded
-                    e.response.data.forEach(error =>toastr.error('Erro', error.message));
+                    e.response.data.forEach(error =>alert(error.message));
 
                   } 
             })
@@ -58,10 +56,15 @@ export function showUpdate(id) {
 export function destroy(id) {
     return dispatch => 
     api.delete(`/standards/${id}`)
-        .then(resp => {
-            toastr.success('Sucesso', 'Operação realizada com sucesso.')
-            dispatch([
-                getList()
-            ])
-        })
+    .then(resp => {
+        if(resp.status >= 200 && resp.status < 300){
+            alert('Cadastro Excluído!')
+        }else{
+            alert('Erro ao excluir cadastro!')
+        }
+
+        dispatch([
+            getList()
+        ])
+    })
 }
